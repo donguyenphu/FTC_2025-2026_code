@@ -1,0 +1,28 @@
+import java.text.SimpleDateFormat
+
+apply plugin: 'com.android.library'
+
+android {
+    namespace = 'com.qualcomm.ftcrobotcontroller'
+
+    compileSdkVersion 30   // Match FTC SDK 10.2
+
+    defaultConfig {
+        minSdkVersion 24
+        targetSdkVersion 30   // FTC apps do not go to Google Play
+        buildConfigField "String", "APP_BUILD_TIME", '"' +
+                (new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ROOT)
+                        .format(new Date())) + '"'
+    }
+
+    buildFeatures {
+        buildConfig = true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+apply from: '../build.dependencies.gradle'
