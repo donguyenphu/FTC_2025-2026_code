@@ -35,7 +35,6 @@ package org.firstinspires.ftc.teamcode.FTC2526.Test;
 
 import android.util.Size;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -60,7 +59,7 @@ import java.util.Locale;
  */
 
 @TeleOp(name = "Utility: Camera Frame Capture", group = "Utility")
-public class testCamera extends LinearOpMode
+public class testCameraCapture extends LinearOpMode
 {
     /*
      * EDIT THESE PARAMETERS AS NEEDED
