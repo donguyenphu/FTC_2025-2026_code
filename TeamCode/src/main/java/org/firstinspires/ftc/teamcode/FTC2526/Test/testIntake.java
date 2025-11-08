@@ -10,7 +10,7 @@ public class testIntake extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        leftFront = hardwareMap.get(DcMotor.class, "motorIntake");
+        leftFront = hardwareMap.get(DcMotor.class, "intake");
         leftFront.setPower(0);
 
         waitForStart();

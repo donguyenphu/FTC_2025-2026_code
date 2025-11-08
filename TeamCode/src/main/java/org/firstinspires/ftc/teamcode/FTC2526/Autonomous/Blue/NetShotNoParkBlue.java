@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.FTC2526.Autonomous.Red.Launch;
+package org.firstinspires.ftc.teamcode.FTC2526.Autonomous.Blue;
 
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
@@ -13,8 +13,8 @@ import org.firstinspires.ftc.teamcode.FTC2526.Utils.shooterOneMotor;
 import org.firstinspires.ftc.teamcode.FTC2526.Utils.waitSleep;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 
-@Autonomous(name="LaunchShotNoParkRed")
-public class LaunchShotNoParkRed extends LinearOpMode {
+@Autonomous(name="NetShotNoParkBlue")
+public class NetShotNoParkBlue extends LinearOpMode {
     private DcMotorEx shooter;
     private DcMotorEx intake;
     @Override

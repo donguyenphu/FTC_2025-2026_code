@@ -5,20 +5,19 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
-@TeleOp(name = "testVelocityMotor")
-public class testVelocityMotor extends LinearOpMode {
+@TeleOp(name = "testVelocityMotorNoBuiltinPID")
+public class testVelocityMotorNoBuiltinPID extends LinearOpMode {
     private DcMotorEx motorIntake;
 
     @Override
     public void runOpMode() {
-        motorIntake = hardwareMap.get(DcMotorEx.class, "motorIntake");
+        motorIntake = hardwareMap.get(DcMotorEx.class, "intake");
         motorIntake.setPower(0);
-        motorIntake.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); /// set to 0
-        motorIntake.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER); /// builtin PID
+        motorIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         waitForStart();
 
         while (opModeIsActive()) {
-            motorIntake.setPower(1);
+            motorIntake.setPower(0.3);
             telemetry.addData("velocity (ticks/sec): ", motorIntake.getVelocity());
             telemetry.addData("Power ([-1,1]): ", motorIntake.getPower());
             telemetry.update();

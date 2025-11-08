@@ -6,7 +6,7 @@ import com.noahbres.meepmeep.MeepMeep;
 import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder;
 import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
 
-public class NetNoParkBlue {
+public class NetShotNoParkBlue {
     public static void main(String[] args) {
         MeepMeep meepMeep = new MeepMeep(500);
 
@@ -15,8 +15,20 @@ public class NetNoParkBlue {
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
                 .build();
 //        new Pose2d is the initial position
-        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(61.00, -12.00, Math.toRadians(180.00)))
-                .strafeTo(new Vector2d(61.00, -58.00))
+        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(62.05, -11.71, Math.toRadians(180.00)))
+                .splineToLinearHeading(new Pose2d(-11.60, -11.81, Math.toRadians(-135.00)), Math.toRadians(171.48))
+                .turnTo(Math.toRadians(-90.00))
+                .strafeTo(new Vector2d(-12.12, -56.25))
+                .strafeTo(new Vector2d(-11.60, -11.81))
+                .turn(Math.toRadians(-45.00))
+                .splineToLinearHeading(new Pose2d(11.71, -32.43, Math.toRadians(-90.00)), Math.toRadians(-40.33))
+                .strafeTo(new Vector2d(12.12, -62.00))
+                .strafeTo(new Vector2d(-11.60, -11.81))
+                .turn(Math.toRadians(-45.00))
+                .splineToLinearHeading(new Pose2d(35.74, -32.43, Math.toRadians(-90.00)), Math.toRadians(-22.47))
+                .strafeTo(new Vector2d(35.95, -62.00))
+                .strafeTo(new Vector2d(-11.60, -11.81))
+                .turn(Math.toRadians(-45.00))
                 .build());
 
         meepMeep.setBackground(MeepMeep.Background.FIELD_DECODE_JUICE_DARK)
