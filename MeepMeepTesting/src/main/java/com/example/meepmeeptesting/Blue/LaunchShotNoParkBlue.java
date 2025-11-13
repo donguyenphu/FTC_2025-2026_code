@@ -27,7 +27,7 @@ public class LaunchShotNoParkBlue {
                 .strafeTo(new Vector2d(-11.60, -11.81))
                 .turn(Math.toRadians(-45.00))
                 .splineToLinearHeading(new Pose2d(35.74, -32.43, Math.toRadians(-90.00)), Math.toRadians(-22.47))
-                .strafeTo(new Vector2d(35.95, -56.00))
+                .strafeTo(new Vector2d(35.74, -56.00))
                 .strafeTo(new Vector2d(-11.60, -11.81))
                 .turn(Math.toRadians(-45.00))
                 .build());
