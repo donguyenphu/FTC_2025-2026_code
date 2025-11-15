@@ -16,8 +16,9 @@ import org.firstinspires.ftc.teamcode.FTC2526.Utils.shooterOneMotor;
 import org.firstinspires.ftc.teamcode.FTC2526.Utils.sorterArtifacts;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 
-@Autonomous(name="LaunchShotNoParkBlue")
-public class LaunchShotNoParkBlue extends LinearOpMode {
+
+@Autonomous(name="Launch Shot Blue: PGP")
+public class LaunchShotNoParkBluePGP extends LinearOpMode {
     private DcMotorEx shooter;
     private DcMotorEx intake;
     private Servo rotator;
@@ -25,7 +26,7 @@ public class LaunchShotNoParkBlue extends LinearOpMode {
     private ColorSensor detector;
     @Override
     public void runOpMode() throws InterruptedException {
-        Pose2d startPose = new Pose2d(-61.00, -11.18, Math.toRadians(180.00));
+        Pose2d startPose = new Pose2d(-61.00, -11.18, Math.toRadians(-90.00));
         MecanumDrive drive = new MecanumDrive(hardwareMap, startPose);
         shooter = hardwareMap.get(DcMotorEx.class, "shooter");
         intake = hardwareMap.get(DcMotorEx.class, "intake");
@@ -38,15 +39,15 @@ public class LaunchShotNoParkBlue extends LinearOpMode {
         rotator.setPosition(5.0/18.0); /// -40
         shooterOneMotor customPIDshooter = new shooterOneMotor(1, 1, 1, 2400, shooter);
         shooterOneMotor customPIDintake = new shooterOneMotor(1, 1, 1, 2400, intake);
-        sorterArtifacts sorterSystem = new sorterArtifacts(rotator, detector, passer);
+        sorterArtifacts sorterSystem = new sorterArtifacts(rotator, detector, passer, 22);
         drive.updatePoseEstimate();
         waitForStart();
         if (isStopRequested()) return;
         //--------------------------------------MAIN-CODE-------------------------------------//
         // first turn go + turn to glance the ID
         TrajectoryActionBuilder tab1 = drive.actionBuilder(startPose)
-                .strafeTo(new Vector2d(-23.93, -24.14))
-                .turnTo(Math.toRadians(145.00));
+                .splineToLinearHeading(new Pose2d(-23.93, -24.14, 180.00), -138.00)
+                .afterTime(0, customPIDshooter.setPIDVelocityAction());
         // strafe to take first row + go to shooting point
         TrajectoryActionBuilder tab2 = drive.actionBuilder(startPose)
                 .splineToLinearHeading(new Pose2d(-12.12, -32.43, Math.toRadians(-90.00)), Math.toRadians(268.55))
@@ -55,8 +56,7 @@ public class LaunchShotNoParkBlue extends LinearOpMode {
                 .afterTime(0, sorterSystem.sensingAction())
                 .strafeTo(new Vector2d(-11.60, -11.81))
                 .turn(-45.00)
-                .afterTime(0, customPIDintake.setInitialPowerAction())
-                .afterTime(0, customPIDshooter.setPIDVelocityAction());
+                .afterTime(0, customPIDintake.setInitialPowerAction());
         // strafe to take the second row + go to shooting point
         TrajectoryActionBuilder tab3 = drive.actionBuilder(startPose)
                 .splineToLinearHeading(new Pose2d(11.71, -32.43, Math.toRadians(-90.00)), Math.toRadians(268.55))
@@ -65,8 +65,7 @@ public class LaunchShotNoParkBlue extends LinearOpMode {
                 .afterTime(0, sorterSystem.sensingAction())
                 .strafeTo(new Vector2d(-11.60, -11.81))
                 .turn(-45.00)
-                .afterTime(0, customPIDintake.setInitialPowerAction())
-                .afterTime(0, customPIDshooter.setPIDVelocityAction());
+                .afterTime(0, customPIDintake.setInitialPowerAction());
         // strafe to take the third row + go to shooting point
         TrajectoryActionBuilder tab4 = drive.actionBuilder(startPose)
                 .splineToLinearHeading(new Pose2d(35.74, -32.43, Math.toRadians(-90.00)), Math.toRadians(268.55))
@@ -75,20 +74,17 @@ public class LaunchShotNoParkBlue extends LinearOpMode {
                 .afterTime(0, sorterSystem.sensingAction())
                 .strafeTo(new Vector2d(-11.60, -11.81))
                 .turn(-45.00)
-                .afterTime(0, customPIDintake.setInitialPowerAction())
-                .afterTime(0, customPIDshooter.setPIDVelocityAction());
+                .afterTime(0, customPIDintake.setInitialPowerAction());
         Actions.runBlocking(
                 new SequentialAction(
                         tab1.build(),
+                        sorterSystem.processMotifAction(),
                         tab2.build(),
                         sorterSystem.processMotifAction(),
-                        customPIDshooter.setInitialPowerAction(),
                         tab3.build(),
                         sorterSystem.processMotifAction(),
-                        customPIDshooter.setInitialPowerAction(),
                         tab4.build(),
-                        sorterSystem.processMotifAction(),
-                        customPIDshooter.setInitialPowerAction()
+                        sorterSystem.processMotifAction()
                 )
         );
     }

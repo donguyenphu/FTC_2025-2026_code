@@ -1,6 +1,7 @@
 package com.example.meepmeeptesting.Blue;
 
 import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.Rotation2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.noahbres.meepmeep.MeepMeep;
 import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder;
@@ -16,19 +17,16 @@ public class NetShotNoParkBlue {
                 .build();
 //        new Pose2d is the initial position
         myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(62.05, -11.71, Math.toRadians(180.00)))
-                .splineToLinearHeading(new Pose2d(-11.60, -11.81, Math.toRadians(-135.00)), Math.toRadians(171.48))
+                .strafeToLinearHeading(new Vector2d(-11.60, -11.81), new Rotation2d(-135.00, -135.00))
                 .turnTo(Math.toRadians(-90.00))
-                .strafeTo(new Vector2d(-12.12, -56.25))
-                .strafeTo(new Vector2d(-11.60, -11.81))
-                .turn(Math.toRadians(-45.00))
-                .splineToLinearHeading(new Pose2d(11.71, -32.43, Math.toRadians(-90.00)), Math.toRadians(-40.33))
-                .strafeTo(new Vector2d(12.12, -62.00))
-                .strafeTo(new Vector2d(-11.60, -11.81))
-                .turn(Math.toRadians(-45.00))
-                .splineToLinearHeading(new Pose2d(35.74, -32.43, Math.toRadians(-90.00)), Math.toRadians(-22.47))
-                .strafeTo(new Vector2d(35.95, -62.00))
-                .strafeTo(new Vector2d(-11.60, -11.81))
-                .turn(Math.toRadians(-45.00))
+                .strafeTo(new Vector2d(-12.12, -55.00))
+                .strafeToLinearHeading(new Vector2d(-11.60, -11.81), new Rotation2d(-135.00, -135.00))
+                .splineToLinearHeading(new Pose2d(11.71, -32.43, Math.toRadians(-90.00)), Math.toRadians(0.00))
+                .strafeTo(new Vector2d(12.12, -55.00))
+                .strafeToLinearHeading(new Vector2d(-11.60, -11.81), new Rotation2d(-135.00, -135.00))
+                .splineToLinearHeading(new Pose2d(35.74, -32.43, Math.toRadians(-90.00)), Math.toRadians(0.00))
+                .strafeTo(new Vector2d(35.95, -55.00))
+                .strafeToLinearHeading(new Vector2d(-11.60, -11.81), new Rotation2d(-135.00, -135.00))
                 .build());
 
         meepMeep.setBackground(MeepMeep.Background.FIELD_DECODE_JUICE_DARK)

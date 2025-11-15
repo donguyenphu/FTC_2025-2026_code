@@ -21,14 +21,29 @@ public class sorterArtifacts {
     private Servo passer;
     private int currentOrder = 1; // current position
     // 1 is green, 2 is purple
-    private double[] slot = {-1, 0, 0, 0};
-    private double[] motif = {-1, 0, 0, 0};
+    private double[] slot = {-1, 0, 0, 0};  // based on Order intake: green - 1, purple - 2
+    private double[] motif = {-1, 0, 0, 0}; // based on AprilTag: green - 1, purple - 2
     private double gearRatio = 3; // this/other
 
-    public sorterArtifacts(Servo rotator, ColorSensor detector, Servo passer) {
+    public sorterArtifacts(Servo rotator, ColorSensor detector, Servo passer, int id) {
         this.rotator = rotator;
         this.detector = detector;
         this.passer = passer;
+        if (id == 21) { // GPP
+            this.motif[1] = 1;
+            this.motif[2] = 2;
+            this.motif[3] = 2;
+        }
+        else if (id == 22) { // PGP
+            this.motif[1] = 2;
+            this.motif[2] = 1;
+            this.motif[3] = 2;
+        }
+        else if (id == 23) { // PPG
+            this.motif[1] = 2;
+            this.motif[2] = 2;
+            this.motif[3] = 1;
+        }
     }
 /// For Purple
     public Action setPurpleAction() {
