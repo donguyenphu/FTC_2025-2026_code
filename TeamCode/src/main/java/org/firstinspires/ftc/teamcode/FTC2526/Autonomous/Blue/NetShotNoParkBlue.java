@@ -7,7 +7,10 @@ import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.ColorSensor;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.FTC2526.Utils.shooterOneMotor;
 import org.firstinspires.ftc.teamcode.FTC2526.Utils.waitSleep;
@@ -17,12 +20,19 @@ import org.firstinspires.ftc.teamcode.MecanumDrive;
 public class NetShotNoParkBlue extends LinearOpMode {
     private DcMotorEx shooter;
     private DcMotorEx intake;
+    private Servo passer;
+    private Servo rotator;
+    private ColorSensor detector;
     @Override
     public void runOpMode() throws InterruptedException {
         Pose2d startPose = new Pose2d(-25.00, 25.00, Math.toRadians(135.00));
         MecanumDrive drive = new MecanumDrive(hardwareMap, startPose);
         shooter = hardwareMap.get(DcMotorEx.class, "shooter");
         intake = hardwareMap.get(DcMotorEx.class, "intake");
+        passer = hardwareMap.get(Servo.class, "passer");
+        rotator = hardwareMap.get(Servo.class, "rotator");
+        shooter.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        intake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         shooterOneMotor customPIDshooter = new shooterOneMotor(1, 1, 1, 2400, shooter);
         shooterOneMotor customPIDintake = new shooterOneMotor(1, 1, 1, 2400, intake);
         drive.updatePoseEstimate();

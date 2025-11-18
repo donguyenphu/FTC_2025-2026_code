@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.FTC2526.Autonomous.Blue;
+package org.firstinspires.ftc.teamcode.FTC2526.Autonomous.Red;
 
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.Rotation2d;
@@ -17,9 +17,8 @@ import org.firstinspires.ftc.teamcode.FTC2526.Utils.shooterOneMotor;
 import org.firstinspires.ftc.teamcode.FTC2526.Utils.sorterArtifacts;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 
-
-@Autonomous(name="Launch Shot Blue: PPG (without to human player)")
-public class LaunchShotNoParkBluePPG extends LinearOpMode {
+@Autonomous(name="Launch Shot Red: PPG (without to human player)")
+public class LaunchShotNoParkRedPPG extends LinearOpMode {
     private DcMotorEx shooter;
     private DcMotorEx intake;
     private Servo rotator;
@@ -27,7 +26,7 @@ public class LaunchShotNoParkBluePPG extends LinearOpMode {
     private ColorSensor detector;
     @Override
     public void runOpMode() throws InterruptedException {
-        Pose2d startPose = new Pose2d(-61.00, -11.18, Math.toRadians(-90.00));
+        Pose2d startPose = new Pose2d(-61.00, 11.18, Math.toRadians(90.00));
         MecanumDrive drive = new MecanumDrive(hardwareMap, startPose);
         shooter = hardwareMap.get(DcMotorEx.class, "shooter");
         intake = hardwareMap.get(DcMotorEx.class, "intake");
@@ -47,31 +46,31 @@ public class LaunchShotNoParkBluePPG extends LinearOpMode {
         //--------------------------------------MAIN-CODE-------------------------------------//
         // first turn go + turn to glance the ID
         TrajectoryActionBuilder tab1 = drive.actionBuilder(startPose)
-                .strafeToLinearHeading(new Vector2d(-23.93, -24.14), new Rotation2d(-135.00, -135.00))
+                .strafeToLinearHeading(new Vector2d(-23.93, 24.14), new Rotation2d(-135.00, 135.00))
                 .afterTime(0, customPIDshooter.setPIDVelocityAction());
         // strafe to take first row + go to shooting point
         TrajectoryActionBuilder tab2 = drive.actionBuilder(startPose)
-                .splineToLinearHeading(new Pose2d(-12.12, -32.43, Math.toRadians(-90.00)), Math.toRadians(260.00))
+                .splineToLinearHeading(new Pose2d(-12.12, 32.43, Math.toRadians(90.00)), Math.toRadians(260.00))
                 .afterTime(0, customPIDintake.setPIDVelocityAction())
-                .strafeTo(new Vector2d(-12.12,-56.25))
+                .strafeTo(new Vector2d(-12.12,56.25))
                 .afterTime(0, sorterSystem.sensingAction())
-                .strafeTo(new Vector2d(-11.60, -11.81))
+                .strafeTo(new Vector2d(-11.60, 11.81))
                 .afterTime(0, customPIDintake.setInitialPowerAction());
         // strafe to take the second row + go to shooting point
         TrajectoryActionBuilder tab3 = drive.actionBuilder(startPose)
-                .strafeTo(new Vector2d(11.71, -32.43))
+                .strafeTo(new Vector2d(11.71, 32.43))
                 .afterTime(0, customPIDintake.setPIDVelocityAction())
-                .strafeTo(new Vector2d(12.12, -56.00))
+                .strafeTo(new Vector2d(12.12, 56.00))
                 .afterTime(0, sorterSystem.sensingAction())
-                .strafeTo(new Vector2d(-11.60, -11.81))
+                .strafeTo(new Vector2d(-11.60, 11.81))
                 .afterTime(0, customPIDintake.setInitialPowerAction());
         // strafe to take the third row + go to shooting point
         TrajectoryActionBuilder tab4 = drive.actionBuilder(startPose)
-                .strafeTo(new Vector2d(35.95, -32.43))
+                .strafeTo(new Vector2d(35.95, 32.43))
                 .afterTime(0, customPIDintake.setPIDVelocityAction())
-                .strafeTo(new Vector2d(35.95, -56.00))
+                .strafeTo(new Vector2d(35.95, 56.00))
                 .afterTime(0, sorterSystem.sensingAction())
-                .strafeTo(new Vector2d(-11.60, -11.81))
+                .strafeToLinearHeading(new Vector2d(-11.60, 11.81), new Rotation2d(-135.00, 135.00))
                 .afterTime(0, customPIDintake.setInitialPowerAction());
         Actions.runBlocking(
                 new SequentialAction(

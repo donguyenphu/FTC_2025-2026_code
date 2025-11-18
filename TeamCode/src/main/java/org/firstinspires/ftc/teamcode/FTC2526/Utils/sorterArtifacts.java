@@ -84,7 +84,7 @@ public class sorterArtifacts {
     // shift 1 to right if SHOOTER TILT TO LEFT
     public void setGreen() {
         for (int inp = 1; inp <= 3; inp++) {
-            if (this.slot[inp] == 1) {
+            if (this.slot[inp] == 1) { // green
                 if (inp == 3) setAngle(1);
                 else setAngle(inp + 1);
                 /*
@@ -115,6 +115,7 @@ public class sorterArtifacts {
         else if (input == 2) this.rotator.setPosition(convertedAngle(0));
         else if (input == 3) this.rotator.setPosition(convertedAngle(120));
         this.currentOrder = input;
+        this.slot[input] = 0;
     }
 /// For sensing & changing slot
     public Action sensingAction() {

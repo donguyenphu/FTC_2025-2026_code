@@ -14,6 +14,7 @@ public class testCameraParams extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         AprilTagProcessor tagProcessor = new AprilTagProcessor.Builder()
+                .setLensIntrinsics(507.774, 507.774, 316.177, 242.265)
                 .setDrawAxes(true)
                 .setDrawCubeProjection(true)
                 .setDrawTagOutline(true)

@@ -16,7 +16,7 @@ public class LaunchShotNoParkBlue {
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
                 .build();
 //        new Pose2d is the initial position
-        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(-61.00, -11.18, Math.toRadians(-90.00)))
+        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(-61.00, -11.18, Math.toRadians(90.00)))
                 .strafeToLinearHeading(new Vector2d(-23.93, -24.14), new Rotation2d(-135.00, -135.00))
                 .splineToLinearHeading(new Pose2d(-12.12, -32.43, Math.toRadians(-90.00)), Math.toRadians(260.00))
                 .strafeTo(new Vector2d(-12.12, -56.25))

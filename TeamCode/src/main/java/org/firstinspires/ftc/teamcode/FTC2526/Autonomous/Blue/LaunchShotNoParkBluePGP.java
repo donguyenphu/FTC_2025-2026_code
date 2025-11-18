@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.FTC2526.Autonomous.Blue;
 
 import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.Rotation2d;
 import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.Vector2d;
@@ -17,7 +18,7 @@ import org.firstinspires.ftc.teamcode.FTC2526.Utils.sorterArtifacts;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 
 
-@Autonomous(name="Launch Shot Blue: PGP")
+@Autonomous(name="Launch Shot Blue: PGP (without to human player)")
 public class LaunchShotNoParkBluePGP extends LinearOpMode {
     private DcMotorEx shooter;
     private DcMotorEx intake;
@@ -46,34 +47,31 @@ public class LaunchShotNoParkBluePGP extends LinearOpMode {
         //--------------------------------------MAIN-CODE-------------------------------------//
         // first turn go + turn to glance the ID
         TrajectoryActionBuilder tab1 = drive.actionBuilder(startPose)
-                .splineToLinearHeading(new Pose2d(-23.93, -24.14, 180.00), -138.00)
+                .strafeToLinearHeading(new Vector2d(-23.93, -24.14), new Rotation2d(-135.00, -135.00))
                 .afterTime(0, customPIDshooter.setPIDVelocityAction());
         // strafe to take first row + go to shooting point
         TrajectoryActionBuilder tab2 = drive.actionBuilder(startPose)
-                .splineToLinearHeading(new Pose2d(-12.12, -32.43, Math.toRadians(-90.00)), Math.toRadians(268.55))
+                .splineToLinearHeading(new Pose2d(-12.12, -32.43, Math.toRadians(-90.00)), Math.toRadians(260.00))
                 .afterTime(0, customPIDintake.setPIDVelocityAction())
-                .splineToLinearHeading(new Pose2d(-11.91, -56.25, Math.toRadians(-90.00)), Math.toRadians(270.00))
+                .strafeTo(new Vector2d(-12.12,-56.25))
                 .afterTime(0, sorterSystem.sensingAction())
                 .strafeTo(new Vector2d(-11.60, -11.81))
-                .turn(-45.00)
                 .afterTime(0, customPIDintake.setInitialPowerAction());
         // strafe to take the second row + go to shooting point
         TrajectoryActionBuilder tab3 = drive.actionBuilder(startPose)
-                .splineToLinearHeading(new Pose2d(11.71, -32.43, Math.toRadians(-90.00)), Math.toRadians(268.55))
+                .strafeTo(new Vector2d(11.71, -32.43))
                 .afterTime(0, customPIDintake.setPIDVelocityAction())
-                .splineToLinearHeading(new Pose2d(12.12, -56.00, Math.toRadians(-90.00)), Math.toRadians(270.00))
+                .strafeTo(new Vector2d(12.12, -56.00))
                 .afterTime(0, sorterSystem.sensingAction())
                 .strafeTo(new Vector2d(-11.60, -11.81))
-                .turn(-45.00)
                 .afterTime(0, customPIDintake.setInitialPowerAction());
         // strafe to take the third row + go to shooting point
         TrajectoryActionBuilder tab4 = drive.actionBuilder(startPose)
-                .splineToLinearHeading(new Pose2d(35.74, -32.43, Math.toRadians(-90.00)), Math.toRadians(268.55))
+                .strafeTo(new Vector2d(35.95, -32.43))
                 .afterTime(0, customPIDintake.setPIDVelocityAction())
-                .splineToLinearHeading(new Pose2d(35.74, -56.00, Math.toRadians(-90.00)), Math.toRadians(270.00))
+                .strafeTo(new Vector2d(35.95, -56.00))
                 .afterTime(0, sorterSystem.sensingAction())
                 .strafeTo(new Vector2d(-11.60, -11.81))
-                .turn(-45.00)
                 .afterTime(0, customPIDintake.setInitialPowerAction());
         Actions.runBlocking(
                 new SequentialAction(
