@@ -7,7 +7,7 @@ import com.noahbres.meepmeep.MeepMeep;
 import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder;
 import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
 
-public class LaunchShotNoParkRed {
+public class LaunchShotRed {
     public static void main(String[] args) {
         MeepMeep meepMeep = new MeepMeep(500);
 
@@ -27,6 +27,8 @@ public class LaunchShotNoParkRed {
                 .strafeTo(new Vector2d(35.95, 32.43))
                 .strafeTo(new Vector2d(35.95, 56.00))
                 .strafeToLinearHeading(new Vector2d(-11.60, 11.81), new Rotation2d(-135.00, 135.00))
+                .turnTo(Math.toRadians(-90.00))
+                .strafeTo(new Vector2d(2.00, 55.00))
                 .build());
 
         meepMeep.setBackground(MeepMeep.Background.FIELD_DECODE_JUICE_DARK)

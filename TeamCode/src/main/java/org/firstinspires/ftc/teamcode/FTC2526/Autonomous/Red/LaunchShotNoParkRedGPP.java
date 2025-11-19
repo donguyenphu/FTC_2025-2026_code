@@ -73,6 +73,9 @@ public class LaunchShotNoParkRedGPP extends LinearOpMode {
                 .afterTime(0, sorterSystem.sensingAction())
                 .strafeToLinearHeading(new Vector2d(-11.60, 11.81), new Rotation2d(-135.00, 135.00))
                 .afterTime(0, customPIDintake.setInitialPowerAction());
+        // stop shooter
+        TrajectoryActionBuilder tab5 = drive.actionBuilder(startPose)
+                .afterTime(0, customPIDshooter.setInitialPowerAction());
         Actions.runBlocking(
                 new SequentialAction(
                         tab1.build(),
@@ -82,7 +85,8 @@ public class LaunchShotNoParkRedGPP extends LinearOpMode {
                         tab3.build(),
                         sorterSystem.processMotifAction(),
                         tab4.build(),
-                        sorterSystem.processMotifAction()
+                        sorterSystem.processMotifAction(),
+                        tab5.build()
                 )
         );
     }
