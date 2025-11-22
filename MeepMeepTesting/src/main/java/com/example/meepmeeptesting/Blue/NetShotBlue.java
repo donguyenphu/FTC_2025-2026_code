@@ -17,6 +17,7 @@ public class NetShotBlue {
                 .build();
 //        new Pose2d is the initial position
         myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(62.05, -11.71, Math.toRadians(180.00)))
+                .strafeTo(new Vector2d(38.18, -11.81))
                 .strafeToLinearHeading(new Vector2d(-11.60, -11.81), new Rotation2d(-135.00, -135.00))
                 .turnTo(Math.toRadians(-90.00))
                 .strafeTo(new Vector2d(-12.12, -55.00))
