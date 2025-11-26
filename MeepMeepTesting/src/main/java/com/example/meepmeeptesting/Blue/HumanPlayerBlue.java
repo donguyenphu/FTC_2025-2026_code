@@ -25,6 +25,8 @@ public class HumanPlayerBlue {
                 .strafeTo(new Vector2d(35.63, -64.69))
                 .strafeTo(new Vector2d(64.06, -64.48))
                 .strafeToLinearHeading(new Vector2d(36.89, -11.81), new Rotation2d(-135.00, -135.00))
+                .turnTo(Math.toRadians(90.00))
+                .strafeTo(new Vector2d(2.00, -55.00))
                 .build());
 
         meepMeep.setBackground(MeepMeep.Background.FIELD_DECODE_JUICE_DARK)

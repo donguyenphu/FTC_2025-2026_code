@@ -24,6 +24,8 @@ public class HumanPlayerRed {
                 .splineToLinearHeading(new Pose2d(35.63, 64.69, Math.toRadians(0.00)), Math.toRadians(97.79))
                 .strafeTo(new Vector2d(64.06, 64.48))
                 .strafeToLinearHeading(new Vector2d(36.89, 11.81), new Rotation2d(-45.00, 45.00))
+                .turnTo(Math.toRadians(-90.00))
+                .strafeTo(new Vector2d(2.00, 55.00))
                 .build());
 
         meepMeep.setBackground(MeepMeep.Background.FIELD_DECODE_JUICE_DARK)

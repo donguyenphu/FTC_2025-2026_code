@@ -10,7 +10,7 @@ public class testOneShooter extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        motorShooter = hardwareMap.get(DcMotor.class, "motorShooter");
+        motorShooter = hardwareMap.get(DcMotor.class, "shooter");
         motorShooter.setPower(0);
 
         waitForStart();

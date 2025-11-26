@@ -8,11 +8,13 @@ import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.FTC2526.Utils.shooterOneMotor;
 import org.firstinspires.ftc.teamcode.FTC2526.Utils.sorterArtifacts;
 import org.firstinspires.ftc.teamcode.FTC2526.Utils.waitSleep;
@@ -25,6 +27,8 @@ public class LaunchShotNoParkRedGPP extends LinearOpMode {
     private Servo rotator;
     private Servo passer;
     private ColorSensor detector;
+    private CRServo turret;
+    private WebcamName webcamName;
     @Override
     public void runOpMode() throws InterruptedException {
         Pose2d startPose = new Pose2d(-61.00, 11.18, Math.toRadians(90.00));
@@ -34,13 +38,15 @@ public class LaunchShotNoParkRedGPP extends LinearOpMode {
         rotator = hardwareMap.get(Servo.class, "rotator");
         detector = hardwareMap.get(ColorSensor.class, "detector");
         passer = hardwareMap.get(Servo.class, "passer");
+        turret = hardwareMap.get(CRServo.class, "turret");
+        webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
         // to use custom PID
         shooter.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         intake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rotator.setPosition(5.0/18.0); /// -40
         shooterOneMotor customPIDshooter = new shooterOneMotor(1, 1, 1, 2400, shooter);
         shooterOneMotor customPIDintake = new shooterOneMotor(1, 1, 1, 2400, intake);
-        sorterArtifacts sorterSystem = new sorterArtifacts(rotator, detector, passer, 21);
+        sorterArtifacts sorterSystem = new sorterArtifacts(rotator, detector, passer, turret, 21, 24, webcamName);
         drive.updatePoseEstimate();
         waitForStart();
         if (isStopRequested()) return;
@@ -48,6 +54,7 @@ public class LaunchShotNoParkRedGPP extends LinearOpMode {
         // first turn go + turn to glance the ID
         TrajectoryActionBuilder tab1 = drive.actionBuilder(startPose)
                 .strafeToLinearHeading(new Vector2d(-23.93, 24.14), new Rotation2d(-135.00, 135.00))
+                .afterTime(0, sorterSystem.trackTagIDAction())
                 .afterTime(0, customPIDshooter.setPIDVelocityAction());
         // strafe to take first row + go to shooting point
         TrajectoryActionBuilder tab2 = drive.actionBuilder(startPose)
