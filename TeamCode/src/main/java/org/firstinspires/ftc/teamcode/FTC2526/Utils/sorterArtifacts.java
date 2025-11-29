@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.FTC2526.Utils;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.opMode;
+
 import android.graphics.Color;
 
 import androidx.annotation.NonNull;
@@ -9,11 +11,13 @@ import com.acmerobotics.roadrunner.Action;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 // Rev Color Sénsor V3 can detect red, green, blue
 // -> Purple: high red + high blue + low green
@@ -22,6 +26,7 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 // -> If Blue is max, then it's purple
 // -> If Red is max, then it's purple
 public class sorterArtifacts {
+    private ElapsedTime timer;
     private VisionPortal portal;
     private AprilTagProcessor processor;
     private Integer currentTagID;
@@ -38,6 +43,7 @@ public class sorterArtifacts {
     private double gearRatio = 3; // this/other
 
     public sorterArtifacts(Servo rotator, ColorSensor detector, Servo passer, CRServo turret, int id, int interestTag, WebcamName webcamName) {
+        this.timer = new ElapsedTime();
         // for motif detection
         this.rotator = rotator;
         this.detector = detector;
@@ -122,15 +128,53 @@ public class sorterArtifacts {
     private void trackTagID() {
         if (this.processor.getDetections().size() > 0) {
             for (AprilTagDetection detection : this.processor.getDetections()) {
+                /*
+                 * keep rotating the turret left 360deg, then right 360deg
+                 */
+                // DETECTED
                 if (detection.id == this.trackingTagID) {
-                    double error = detection.ftcPose.bearing;
                     double kP = 0.02;
-                    double power = error * kP;
-                    this.turret.setPower(power);
+//                    while (Math.abs(detection.ftcPose.bearing) > 0.1) {
+                        double error = detection.ftcPose.bearing;
+                        double power = error * kP;
+                        power = Math.min(1.0, Math.max(-1.0, power)); // clamp [-1.0, 1.0]
+                        this.turret.setPower(power);
+//                    }
+                    
                     break;
+                }
+                // NOT DETECTED
+                else {
+                    // split into 2 actions to avoid wires problems
+                    while (this.noTrackingID()) {
+                        turret.setPower(1.0);
+                        // delay 2.52 seconds for gear ratio 2:1 (0.14s / 60deg)
+                        timer.reset();
+                        while (timer.seconds() < 1.68) {
+                            // wait
+                        }
+                        turret.setPower(-1.0);
+                        // delay 2.52 seconds for gear ratio 2:1 (0.14s / 60deg)
+                        timer.reset();
+                        while (timer.seconds() < 1.68) {
+                            // wait
+                        }
+                    }
                 }
             }
         }
+    }
+
+    private boolean noTrackingID() {
+        if (this.processor.getDetections().size() > 0) {
+            for (AprilTagDetection detection : this.processor.getDetections()) {
+                if (detection.id == this.trackingTagID) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return true;
     }
 
 /// For Purple
