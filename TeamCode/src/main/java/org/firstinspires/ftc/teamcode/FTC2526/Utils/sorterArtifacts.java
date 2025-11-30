@@ -40,7 +40,7 @@ public class sorterArtifacts {
     // 1 is green, 2 is purple
     private double[] slot = {-1, 0, 0, 0};  // based on Order intake: green - 1, purple - 2
     private double[] motif = {-1, 0, 0, 0}; // based on AprilTag: green - 1, purple - 2
-    private double gearRatio = 3; // this/other
+    private double gearRatio = 125.0/15.0; // other/this (125:15)
 
     public sorterArtifacts(Servo rotator, ColorSensor detector, Servo passer, CRServo turret, int id, int interestTag, WebcamName webcamName) {
         this.timer = new ElapsedTime();
@@ -140,7 +140,8 @@ public class sorterArtifacts {
                         power = Math.min(1.0, Math.max(-1.0, power)); // clamp [-1.0, 1.0]
                         this.turret.setPower(power);
 //                    }
-                    
+                    // set angle
+
                     break;
                 }
                 // NOT DETECTED
@@ -243,9 +244,9 @@ public class sorterArtifacts {
         }
     }
     public void setAngle(int input) {
-        if (input == 1) this.rotator.setPosition(convertedAngle(-120));
-        else if (input == 2) this.rotator.setPosition(convertedAngle(0));
-        else if (input == 3) this.rotator.setPosition(convertedAngle(120));
+        if (input == 1) this.rotator.setPosition(convertedAngle(0));
+        else if (input == 2) this.rotator.setPosition(convertedAngle(120));
+        else if (input == 3) this.rotator.setPosition(convertedAngle(240));
         this.currentOrder = input;
         this.slot[input] = 0;
     }

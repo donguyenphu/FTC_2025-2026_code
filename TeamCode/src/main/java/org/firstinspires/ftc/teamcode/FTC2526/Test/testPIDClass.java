@@ -7,19 +7,18 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.acmerobotics.dashboard.config.Config;
+
 import org.firstinspires.ftc.teamcode.FTC2526.Utils.shooterOneMotor;
 
 @TeleOp(name = "Fixed Velocity PID Test")
 @Config
 public class testPIDClass extends LinearOpMode {
+    // params for 1500 velocity
+    public static double kP = 0.0;
+    public static double kI = 0.0;
+    public static double kD = 0.0;
 
-    // Adjustable via FTC Dashboard
-    public static double kP = 118.8;
-    public static double kI = 792.0;
-    public static double kD = 4.455;
-
-    // Fixed target velocity in ticks/sec
-    public static double targetVelocity = 1500;
+    public static double targetVelocity = 2400; // desired fixed velocity
 
     private DcMotorEx motor;
     private FtcDashboard dashboard;
@@ -33,19 +32,36 @@ public class testPIDClass extends LinearOpMode {
 
         dashboard = FtcDashboard.getInstance();
 
+        // Create PID controller ONCE
+        shooterOneMotor pidController = new shooterOneMotor(kP, kI, kD, targetVelocity, motor);
+
         telemetry.addLine("Ready to run fixed velocity test!");
         telemetry.update();
         waitForStart();
 
         while (opModeIsActive()) {
 
-            // Update PID coefficients from dashboard
-            shooterOneMotor customPIDmotor = new shooterOneMotor(kP, kI, kD, targetVelocity, motor);
-            customPIDmotor.calculatePID();
+            // Update constants dynamically from Dashboard
+            pidController.kP = kP;
+            pidController.kI = kI;
+            pidController.kD = kD;
+            pidController.desiredVelocity = targetVelocity;
 
-            telemetry.addData("Target Velocity", targetVelocity);
-            telemetry.addData("Actual Velocity", motor.getVelocity());
+            // Compute PID & set motor power
+            pidController.calculatePID();
+
+            double actualVelo = motor.getVelocity();
+
+            // Telemetry to Driver Station
+            telemetry.addData("Target", targetVelocity);
+            telemetry.addData("Actual", actualVelo);
             telemetry.update();
+
+            // Telemetry to Dashboard (GRAPH SUPPORT)
+            TelemetryPacket packet = new TelemetryPacket();
+            packet.put("targetVelocity", targetVelocity);
+            packet.put("actualVelocity", actualVelo);
+            dashboard.sendTelemetryPacket(packet);
         }
     }
 }
