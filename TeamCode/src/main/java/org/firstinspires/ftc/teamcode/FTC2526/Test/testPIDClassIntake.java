@@ -1,24 +1,24 @@
 package org.firstinspires.ftc.teamcode.FTC2526.Test;
 
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.acmerobotics.dashboard.config.Config;
 
 import org.firstinspires.ftc.teamcode.FTC2526.Utils.shooterOneMotor;
 
-@TeleOp(name = "Fixed Velocity PID Test")
+@TeleOp(name = "Fixed Intake Velocity PID Test")
 @Config
-public class testPIDClass extends LinearOpMode {
+public class testPIDClassIntake extends LinearOpMode {
     // params for 1500 velocity
     public static double kP = 0.0;
     public static double kI = 0.0;
     public static double kD = 0.0;
 
-    public static double targetVelocity = 2400; // desired fixed velocity
+    public static double targetVelocity = 2000; // desired fixed velocity
 
     private DcMotorEx motor;
     private FtcDashboard dashboard;
@@ -33,7 +33,7 @@ public class testPIDClass extends LinearOpMode {
         dashboard = FtcDashboard.getInstance();
 
         // Create PID controller ONCE
-        shooterOneMotor pidController = new shooterOneMotor(kP, kI, kD, targetVelocity, motor);
+        shooterOneMotor pidController = new shooterOneMotor(kP, kI, kD, targetVelocity, motor, 2000);
 
         telemetry.addLine("Ready to run fixed velocity test!");
         telemetry.update();

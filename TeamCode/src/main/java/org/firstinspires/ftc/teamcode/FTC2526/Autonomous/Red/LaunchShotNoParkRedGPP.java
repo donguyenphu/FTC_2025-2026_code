@@ -44,8 +44,8 @@ public class LaunchShotNoParkRedGPP extends LinearOpMode {
         shooter.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         intake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rotator.setPosition(5.0/18.0); /// -40
-        shooterOneMotor customPIDshooter = new shooterOneMotor(1, 1, 1, 2400, shooter);
-        shooterOneMotor customPIDintake = new shooterOneMotor(1, 1, 1, 2400, intake);
+        shooterOneMotor customPIDshooter = new shooterOneMotor(1, 1, 1, 2400, shooter, 2400);
+        shooterOneMotor customPIDintake = new shooterOneMotor(1, 1, 1, 2400, intake, 2000);
         sorterArtifacts sorterSystem = new sorterArtifacts(rotator, detector, passer, turret, 21, 24, webcamName);
         drive.updatePoseEstimate();
         waitForStart();

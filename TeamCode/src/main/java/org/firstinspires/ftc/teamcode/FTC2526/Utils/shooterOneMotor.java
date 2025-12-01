@@ -10,15 +10,17 @@ public class shooterOneMotor {
     private DcMotorEx shooter1;
     public double kP, kI, kD;
     public double desiredVelocity;
+    public double limitVelocity;
     private double integral = 0;
     private double errorLast = 0;
     private long timeLast = 0;
 
-    public shooterOneMotor(double kP, double kI, double kD, double fixedVelocity, DcMotorEx shooter) {
+    public shooterOneMotor(double kP, double kI, double kD, double fixedVelocity, DcMotorEx shooter, double limitVelocity) {
         this.kP = kP;
         this.kI = kI;
         this.kD = kD;
         this.desiredVelocity = fixedVelocity;
+        this.limitVelocity = limitVelocity;
         this.shooter1 = shooter;
         setToZero();
         timeLast = System.nanoTime();
@@ -35,8 +37,8 @@ public class shooterOneMotor {
 
         double output = kP * error + kI * integral + kD * derivative;
 
-        // Clip output to motor range [-2400, 2400]
-        output = Math.max(-2400, Math.min(2400, output));
+        // Clip output to motor range [-limitVelocity, limitVelocity]
+        output = Math.max(-this.limitVelocity, Math.min(this.limitVelocity, output));
 
         setSpecificVelocity(output);
 
