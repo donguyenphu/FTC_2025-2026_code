@@ -7,7 +7,7 @@ import com.acmerobotics.roadrunner.Action;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 public class shooterOneMotor {
-    private DcMotorEx shooter1;
+    private DcMotorEx shooter;
     public double kP, kI, kD;
     public double desiredVelocity;
     public double limitVelocity;
@@ -21,7 +21,7 @@ public class shooterOneMotor {
         this.kD = kD;
         this.desiredVelocity = fixedVelocity;
         this.limitVelocity = limitVelocity;
-        this.shooter1 = shooter;
+        this.shooter = shooter;
         setToZero();
         timeLast = System.nanoTime();
     }
@@ -30,7 +30,7 @@ public class shooterOneMotor {
     public void calculatePID() {
         long timeNow = System.nanoTime();
         double dt = (timeNow - timeLast) / 1e9; // seconds
-        double error = desiredVelocity - shooter1.getVelocity();
+        double error = desiredVelocity - shooter.getVelocity();
 
         integral += error * dt;
         double derivative = (error - errorLast) / dt;
@@ -59,15 +59,15 @@ public class shooterOneMotor {
     }
 
     public void setSpecificPower(double value) {
-        shooter1.setVelocity(value);
+        shooter.setVelocity(value);
     }
 
     public void setSpecificVelocity(double value) {
-        shooter1.setVelocity(value);
+        shooter.setVelocity(value);
     }
 
     public void setToZero() {
-        shooter1.setPower(0);
+        shooter.setPower(0);
     }
 
     public class SetInitialPower implements Action {
@@ -83,11 +83,11 @@ public class shooterOneMotor {
     }
 
     public void setMaxForwardPower() {
-        shooter1.setPower(1);
+        shooter.setPower(1);
     }
 
     public void setMaxReversePower() {
-        shooter1.setPower(-1);
+        shooter.setPower(-1);
     }
 
 }
