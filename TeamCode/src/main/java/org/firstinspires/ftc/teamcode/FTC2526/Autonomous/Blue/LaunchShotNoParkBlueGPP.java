@@ -25,6 +25,7 @@ public class LaunchShotNoParkBlueGPP extends LinearOpMode {
     private DcMotorEx intake;
     private Servo rotator;
     private Servo passer;
+    private Servo modify;
     private CRServo turret;
     private ColorSensor detector;
     private WebcamName webcamName;
@@ -38,6 +39,7 @@ public class LaunchShotNoParkBlueGPP extends LinearOpMode {
         detector = hardwareMap.get(ColorSensor.class, "detector");
         passer = hardwareMap.get(Servo.class, "passer");
         turret = hardwareMap.get(CRServo.class, "turret");
+        modify = hardwareMap.get(Servo.class, "modify");
         webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
         // to use custom PID
         shooter.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -45,7 +47,7 @@ public class LaunchShotNoParkBlueGPP extends LinearOpMode {
         rotator.setPosition(5.0/18.0); /// -40
         shooterOneMotor customPIDshooter = new shooterOneMotor(1, 1, 1, 2400, shooter, 2400);
         shooterOneMotor customPIDintake = new shooterOneMotor(1, 1, 1, 2400, intake, 2000);
-        sorterArtifacts sorterSystem = new sorterArtifacts(rotator, detector, passer, turret, 21, 20, webcamName);
+        sorterArtifacts sorterSystem = new sorterArtifacts(modify, rotator, detector, passer, turret, 21, 20, webcamName);
         drive.updatePoseEstimate();
         waitForStart();
         if (isStopRequested()) return;

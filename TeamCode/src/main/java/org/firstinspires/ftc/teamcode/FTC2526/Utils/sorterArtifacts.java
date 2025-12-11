@@ -35,6 +35,7 @@ public class sorterArtifacts {
     private ColorSensor detector;
     private Servo rotator;
     private Servo passer;
+    private Servo modify;
     private CRServo turret;
     private int currentOrder = 1; // current position
     // 1 is green, 2 is purple
@@ -42,10 +43,11 @@ public class sorterArtifacts {
     private double[] motif = {-1, 0, 0, 0}; // based on AprilTag: green - 1, purple - 2
     private double gearRatio = 125.0/15.0; // other/this (125:15)
 
-    public sorterArtifacts(Servo rotator, ColorSensor detector, Servo passer, CRServo turret, int id, int interestTag, WebcamName webcamName) {
+    public sorterArtifacts(Servo modify, Servo rotator, ColorSensor detector, Servo passer, CRServo turret, int id, int interestTag, WebcamName webcamName) {
         this.timer = new ElapsedTime();
         // for motif detection
         this.rotator = rotator;
+        this.modify = modify;
         this.detector = detector;
         this.passer = passer;
         this.turret = turret;
@@ -90,7 +92,7 @@ public class sorterArtifacts {
             return false;
         }
     }
-    private void updateDetection() {
+    public void updateDetection() {
         if (this.processor.getDetections().size() > 0) {
             AprilTagDetection detection = this.processor.getDetections().get(0);
             this.currentTagAll = detection;
@@ -125,7 +127,7 @@ public class sorterArtifacts {
             return true; // keep running
         }
     }
-    private void trackTagID() {
+    public void trackTagID() {
         if (this.processor.getDetections().size() > 0) {
             for (AprilTagDetection detection : this.processor.getDetections()) {
                 /*
@@ -133,14 +135,27 @@ public class sorterArtifacts {
                  */
                 // DETECTED
                 if (detection.id == this.trackingTagID) {
-                    double kP = 0.02;
+                    double kP = 0.5;
 //                    while (Math.abs(detection.ftcPose.bearing) > 0.1) {
-                        double error = detection.ftcPose.bearing;
-                        double power = error * kP;
-                        power = Math.min(1.0, Math.max(-1.0, power)); // clamp [-1.0, 1.0]
-                        this.turret.setPower(power);
+                    double error = detection.ftcPose.bearing;
+                    double power = error * kP;
+                    power = Math.min(1.0, Math.max(-1.0, power)); // clamp [-1.0, 1.0]
+                    this.turret.setPower(power);
 //                    }
                     // set angle
+                    // in meters
+                    double distanceCameraToShooter = 0.15;
+                    double xDistance = detection.ftcPose.x;
+                    double yDistance = detection.ftcPose.y;
+                    double zDistance = detection.ftcPose.z;
+                    double distance3D = Math.sqrt(xDistance * xDistance + yDistance * yDistance + zDistance * zDistance);
+                    double distance2D = Math.sqrt(xDistance * xDistance + zDistance * zDistance) + distanceCameraToShooter;
+                    double maxHeight = 0.235 + 0.15 + yDistance;
+                    double modifyGearRatio = 3;
+                    // angle for projectile motion, given height and range/2
+                    double angleRadians = Math.atan((4 * maxHeight)/(2*distance2D));
+                    double convertToServo = angleRadians * modifyGearRatio;
+                    this.modify.setPosition(convertToServo / Math.PI);
 
                     break;
                 }
