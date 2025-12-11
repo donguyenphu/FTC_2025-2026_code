@@ -328,4 +328,20 @@ public class sorterArtifacts {
     public boolean noTagYet() {
         return this.currentTagID == -1;
     }
+    public boolean isPurpleInSlot() {
+        for (int inp = 1; inp <= 3; inp++) {
+            if (this.slot[inp] == 2) { // purple is 2, green is 1, no in slot is -1
+                return true;
+            }
+        }
+        return false;
+    }
+    public boolean isGreenInSlot() {
+        for (int inp = 1; inp <= 3; inp++) {
+            if (this.slot[inp] == 1) { // purple is 2, green is 1, no in slot is -1
+                return true;
+            }
+        }
+        return false;
+    }
 }
