@@ -18,8 +18,8 @@ public class RobotCentricTest extends LinearOpMode {
         frontRight = hardwareMap.get(DcMotor.class, "rightFront");
         backLeft = hardwareMap.get(DcMotor.class, "leftBack");
         backRight = hardwareMap.get(DcMotor.class, "rightBack");
-        frontLeft.setDirection(DcMotor.Direction.REVERSE);
-        backLeft.setDirection(DcMotor.Direction.REVERSE);
+        frontRight.setDirection(DcMotor.Direction.REVERSE);
+        backRight.setDirection(DcMotor.Direction.REVERSE);
         waitForStart();
         if (isStopRequested()) return;
         //--------------------------------------MAIN-CODE-------------------------------------//
